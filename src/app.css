@@ -1,0 +1,7 @@
+.bg-image {
+  backkground-color: url("bg.svg");
+}
+
+.bg {
+  backkground: "#fafafa";
+}
