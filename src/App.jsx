@@ -33,11 +33,17 @@ function App() {
         name,
         revelation,
         verses,
+        preBismillah,
       } = json.data;
 
       const ayat = verses.map((el) => {
         return { ...el, hiddenLatin: true, hiddenTerjemahan: true };
       });
+
+      if (preBismillah) {
+        preBismillah.hiddenLatin = true;
+        preBismillah.hiddenTerjemahan = true;
+      }
 
       const data = {
         jumlahAyat,
@@ -45,13 +51,14 @@ function App() {
         ayat,
         namaSurat: name.transliteration.id,
         namaSuratTerjemahan: name.translation.id,
+        preBismillah,
       };
 
       setSurat(data);
       setisModalHidden(false);
     } catch (e) {
       setIsError(true);
-      // console.log(e);
+      console.log(e);
     }
   };
 

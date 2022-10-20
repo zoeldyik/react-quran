@@ -1,6 +1,5 @@
 import AppSettings from "./settings/AppSettings";
 import { BiX } from "react-icons/bi";
-import { BsFillArrowUpCircleFill } from "react-icons/bs";
 
 import { useContext } from "react";
 
@@ -20,6 +19,16 @@ export default function SuratModal({ surat, setSurat, isHidden, setIsHidden }) {
     });
 
     setSurat({ ...surat, ayat: tempAyat });
+  };
+
+  const showOrHideTextBismillah = (type) => {
+    const newVal = (surat.preBismillah[type] = !surat.preBismillah[type]);
+    const temp = {
+      ...surat.preBismillah,
+      [surat.preBismillah[type]]: newVal,
+    };
+
+    setSurat({ ...surat, [surat.preBismillah[type]]: newVal });
   };
 
   return (
@@ -44,6 +53,57 @@ export default function SuratModal({ surat, setSurat, isHidden, setIsHidden }) {
             {surat.namaSuratTerjemahan}, {surat.jumlahAyat} Ayat, {surat.tipe}
           </p>
         </section>
+
+        {/* Bismillah */}
+        {surat.preBismillah && (
+          <section className="border-b-2 border-neutral-200 pb-4 mx-4 mb-14">
+            <p
+              className="text-right"
+              style={{
+                fontSize: `${font.arab}px`,
+                lineHeight: `${font.lineHeightArab}px`,
+              }}
+            >
+              {surat.preBismillah.text.arab}
+            </p>
+
+            {/* BUTTONS */}
+            <div className="buttons mt-3 flex justify-end">
+              <span
+                className="rounded-md px-3 py-1 bg-neutral-800 text-gray-50 text-xs cursor-pointer mr-2 select-none hover:bg-neutral-600 active:bg-neutral-900"
+                onClick={() => showOrHideTextBismillah("hiddenLatin")}
+              >
+                LATIN
+              </span>
+
+              <span
+                className="btn px-3 py-1 text-xs"
+                onClick={() => showOrHideTextBismillah("hiddenTerjemahan")}
+              >
+                TERJEMAHAN
+              </span>
+            </div>
+
+            {/* Bismillah */}
+            <div>
+              <p
+                className={`bg-neutral-800 text-gray-50 rounded-md px-4 overflow-hidden transition-all 
+                  ${!surat.preBismillah.hiddenLatin ? "show" : "h-0"}`}
+                style={{ fontSize: `${font.latin}px` }}
+              >
+                {surat.preBismillah.text.transliteration.en}
+              </p>
+
+              <p
+                className={`mt-2 bg-emerald-500 text-gray-50 rounded-md px-4 overflow-hidden transition-all
+                  ${!surat.preBismillah.hiddenTerjemahan ? "show" : "h-0"}`}
+                style={{ fontSize: `${font.latin}px` }}
+              >
+                {surat.preBismillah.translation.id}
+              </p>
+            </div>
+          </section>
+        )}
 
         {surat &&
           surat.ayat.map((ayat, idx) => (
